@@ -251,6 +251,7 @@ function onWindowResize() {
 }
 
 // 播放上香动画
+// 修改 playIncenseAnimation 函数
 function playIncenseAnimation(type) {
     const animationArea = document.querySelector('.animation-area');
     const messageArea = document.querySelector('.message-area');
@@ -260,6 +261,19 @@ function playIncenseAnimation(type) {
     animationArea.innerHTML = '';
     messageArea.innerHTML = '';
     
+    // 显示动画区域
+    animationArea.classList.add('active');
+    
+    // 添加关闭按钮
+    const closeButton = document.createElement('div');
+    closeButton.className = 'close-animation';
+    closeButton.innerHTML = '×';
+    closeButton.onclick = function(e) {
+        e.stopPropagation();
+        animationArea.classList.remove('active');
+    };
+    animationArea.appendChild(closeButton);
+
     switch(type) {
         case 'medium':
             harmonicaAudio.play();
@@ -292,7 +306,7 @@ function playIncenseAnimation(type) {
     }
 }
 
-// 显示消息
+// 修改 showMessage 函数
 function showMessage(text) {
     const messageArea = document.querySelector('.message-area');
     messageArea.innerHTML = ''; // 清除之前的消息
@@ -311,7 +325,7 @@ function showMessage(text) {
     });
 }
 
-// 创建柿子动画
+// 修改其他动画函数
 function createPersimmon() {
     const animationArea = document.querySelector('.animation-area');
     const persimmon = document.createElement('div');
@@ -341,15 +355,14 @@ function createPersimmon() {
             });
         }
     });
-}// 创建烟花动画
+}
+
 function createFireworks() {
     const animationArea = document.querySelector('.animation-area');
     
-    // 创建视频容器
     const fireworkContainer = document.createElement('div');
     fireworkContainer.className = 'firework-video';
     
-    // 创建视频元素
     const video = document.createElement('video');
     video.src = 'videos/firework.mp4';
     video.autoplay = true;
@@ -360,7 +373,6 @@ function createFireworks() {
     fireworkContainer.appendChild(video);
     animationArea.appendChild(fireworkContainer);
     
-    // 添加视频加载完成事件
     video.addEventListener('loadeddata', () => {
         gsap.from(fireworkContainer, {
             scale: 0,
@@ -375,11 +387,9 @@ function createFireworks() {
     }, 500);
 }
 
-// 创建财神和金元宝动画
 function createFortuneGod() {
     const animationArea = document.querySelector('.animation-area');
     
-    // 创建财神视频
     const fortuneGodContainer = document.createElement('div');
     fortuneGodContainer.className = 'fortune-god';
     const video = document.createElement('video');
@@ -391,20 +401,17 @@ function createFortuneGod() {
     fortuneGodContainer.appendChild(video);
     animationArea.appendChild(fortuneGodContainer);
 
-    // 创建金元宝容器
     const goldIngotsContainer = document.createElement('div');
     goldIngotsContainer.className = 'gold-ingots-container';
     animationArea.appendChild(goldIngotsContainer);
     
-    // 创建金元宝
     for(let i = 0; i < 15; i++) {
         const goldIngot = document.createElement('div');
         goldIngot.className = 'gold-ingot';
         goldIngotsContainer.appendChild(goldIngot);
         
-        // 计算金元宝的随机位置（限制在容器内）
-        const randomX = (Math.random() - 0.5) * 300;
-        const randomY = (Math.random() - 0.5) * 300;
+        const randomX = (Math.random() - 0.5) * 200;
+        const randomY = (Math.random() - 0.5) * 200;
         
         gsap.from(goldIngot, {
             x: randomX,
@@ -424,7 +431,6 @@ function createFortuneGod() {
         });
     }
     
-    // 添加视频加载完成事件
     video.addEventListener('loadeddata', () => {
         gsap.from(fortuneGodContainer, {
             x: 100,
@@ -438,77 +444,3 @@ function createFortuneGod() {
         showMessage('心想事成！');
     }, 800);
 }
-
-// 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', async function() {
-    try {
-        console.log('DOM Content Loaded');
-        await initScene();
-        animate();
-        
-        // 添加上香按钮点击事件
-        const buyButtons = document.querySelectorAll('.buy-btn');
-        buyButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const type = button.parentElement.dataset.type;
-                createIncenseEffect(type);
-                playIncenseAnimation(type);
-            });
-        });
-
-        // 添加分享和赠送按钮的点击事件
-        const shareBtn = document.querySelector('.share-btn');
-        const giftBtn = document.querySelector('.gift-btn');
-
-        shareBtn.addEventListener('click', () => {
-            const animationArea = document.querySelector('.animation-area');
-            const messageArea = document.querySelector('.message-area');
-            
-            // 清除之前的动画和消息
-            animationArea.innerHTML = '';
-            messageArea.innerHTML = '';
-            
-            // 显示分享提示消息
-            showMessage('阿弥陀佛，请施主自行复制网页给善信，阿弥陀佛');
-        });
-
-        giftBtn.addEventListener('click', () => {
-            const animationArea = document.querySelector('.animation-area');
-            const messageArea = document.querySelector('.message-area');
-            
-            // 清除之前的动画和消息
-            animationArea.innerHTML = '';
-            messageArea.innerHTML = '';
-            
-            // 显示赠送提示消息
-            showMessage('阿弥陀佛，请施主自行选择香型，点击上香即可，阿弥陀佛');
-        });
-
-        // 添加图片点击事件
-        const incenseImages = document.querySelectorAll('.incense-item img');
-        const imageModal = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
-        const closeModal = document.querySelector('.close-modal');
-
-        incenseImages.forEach(img => {
-            img.addEventListener('click', function(e) {
-                e.stopPropagation();
-                modalImage.src = this.src;
-                imageModal.style.display = 'block';
-            });
-        });
-
-        imageModal.addEventListener('click', function() {
-            this.style.display = 'none';
-        });
-
-        closeModal.addEventListener('click', function(e) {
-            e.stopPropagation();
-            imageModal.style.display = 'none';
-        });
-        
-        console.log('Scene started');
-    } catch (error) {
-        console.error('Failed to initialize scene:', error);
-    }
-});

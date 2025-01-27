@@ -80,7 +80,9 @@ async function initScene() {
         console.error('Error initializing scene:', error);
         throw error;
     }
-}// 加载模型
+}
+
+// 加载模型
 function loadModel() {
     return new Promise((resolve, reject) => {
         const loader = new THREE.GLTFLoader();
@@ -105,9 +107,7 @@ function loadModel() {
             }
         );
     });
-}
-
-// 创建香火效果
+}// 创建香火效果
 function createIncenseEffect(type) {
     const particleCount = getParticleCount(type);
     const geometry = new THREE.BufferGeometry();
@@ -251,7 +251,6 @@ function onWindowResize() {
 }
 
 // 播放上香动画
-// 修改 playIncenseAnimation 函数
 function playIncenseAnimation(type) {
     const animationArea = document.querySelector('.animation-area');
     const messageArea = document.querySelector('.message-area');
@@ -306,7 +305,7 @@ function playIncenseAnimation(type) {
     }
 }
 
-// 修改 showMessage 函数
+// 显示消息
 function showMessage(text) {
     const messageArea = document.querySelector('.message-area');
     messageArea.innerHTML = ''; // 清除之前的消息
@@ -323,9 +322,7 @@ function showMessage(text) {
         duration: 1,
         ease: 'back.out(1.7)'
     });
-}
-
-// 修改其他动画函数
+}// 创建柿子动画
 function createPersimmon() {
     const animationArea = document.querySelector('.animation-area');
     const persimmon = document.createElement('div');
@@ -357,6 +354,7 @@ function createPersimmon() {
     });
 }
 
+// 创建烟花动画
 function createFireworks() {
     const animationArea = document.querySelector('.animation-area');
     
@@ -387,6 +385,7 @@ function createFireworks() {
     }, 500);
 }
 
+// 创建财神和金元宝动画
 function createFortuneGod() {
     const animationArea = document.querySelector('.animation-area');
     
@@ -444,3 +443,77 @@ function createFortuneGod() {
         showMessage('心想事成！');
     }, 800);
 }
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        console.log('DOM Content Loaded');
+        await initScene();
+        animate();
+        
+        // 添加上香按钮点击事件
+        const buyButtons = document.querySelectorAll('.buy-btn');
+        buyButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const type = button.parentElement.dataset.type;
+                createIncenseEffect(type);
+                playIncenseAnimation(type);
+            });
+        });
+
+        // 添加分享和赠送按钮的点击事件
+        const shareBtn = document.querySelector('.share-btn');
+        const giftBtn = document.querySelector('.gift-btn');
+
+        shareBtn.addEventListener('click', () => {
+            const animationArea = document.querySelector('.animation-area');
+            const messageArea = document.querySelector('.message-area');
+            
+            // 清除之前的动画和消息
+            animationArea.innerHTML = '';
+            messageArea.innerHTML = '';
+            
+            // 显示分享提示消息
+            showMessage('阿弥陀佛，\n请施主自行复制网页给善信，\n阿弥陀佛');
+        });
+
+        giftBtn.addEventListener('click', () => {
+            const animationArea = document.querySelector('.animation-area');
+            const messageArea = document.querySelector('.message-area');
+            
+            // 清除之前的动画和消息
+            animationArea.innerHTML = '';
+            messageArea.innerHTML = '';
+            
+            // 显示赠送提示消息
+            showMessage('阿弥陀佛，\n请施主自行选择香型，点击上香即可，\n阿弥陀佛');
+        });
+
+        // 添加图片点击事件
+        const incenseImages = document.querySelectorAll('.incense-item img');
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeModal = document.querySelector('.close-modal');
+
+        incenseImages.forEach(img => {
+            img.addEventListener('click', function(e) {
+                e.stopPropagation();
+                modalImage.src = this.src;
+                imageModal.style.display = 'block';
+            });
+        });
+
+        imageModal.addEventListener('click', function() {
+            this.style.display = 'none';
+        });
+
+        closeModal.addEventListener('click', function(e) {
+            e.stopPropagation();
+            imageModal.style.display = 'none';
+        });
+        
+        console.log('Scene started');
+    } catch (error) {
+        console.error('Failed to initialize scene:', error);
+    }
+});

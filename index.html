@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赛博县心想事成庙</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- 使用直接引入的方式 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body>
+    <div class="temple">
+        <h1 class="title">赛博县心想事成庙</h1>
+        
+        <div class="incense-burner">
+            <canvas id="burner-canvas"></canvas>
+        </div>
+
+        <div class="animation-area">
+            <!-- 动画效果将在这里显示 -->
+        </div>
+
+        <div class="message-area">
+            <!-- 文字将在这里显示 -->
+        </div>
+
+        <div class="incense-selection">
+            <div class="incense-item" data-type="medium">
+                <img src="images/medium-incense.png" alt="中香">
+                <h3>中香</h3>
+                <p>价格：¥2</p>
+                <p>描述：上香祈福，好人一生平安</p>
+                <button class="buy-btn">上香</button>
+            </div>
+            <div class="incense-item" data-type="large">
+                <img src="images/large-incense.png" alt="大香">
+                <h3>大香</h3>
+                <p>价格：¥5</p>
+                <p>描述：事事如意，柿柿如意</p>
+                <button class="buy-btn">上香</button>
+            </div>
+            <div class="incense-item" data-type="extra">
+                <img src="images/extra-incense.png" alt="特大香">
+                <h3>特大香</h3>
+                <p>价格：¥10</p>
+                <p>描述：烟花绽放，幸福美好</p>
+                <button class="buy-btn">上香</button>
+            </div>
+            <div class="incense-item" data-type="super">
+                <img src="images/super-incense.png" alt="超级Plus巨香">
+                <h3>超级Plus巨香</h3>
+                <p>价格：¥50</p>
+                <p>描述：财神送福，心想事成</p>
+                <button class="buy-btn">上香</button>
+            </div>
+        </div>
+
+        <div class="share-section">
+            <button class="share-btn">分享给好友</button>
+            <button class="gift-btn">赠送香火</button>
+        </div>
+
+        <!-- 添加打赏区域 -->
+        <div class="donation-section">
+            <h2 class="donation-title">随缘乐助</h2>
+            <p class="donation-desc">功德无量，随喜功德</p>
+            <div class="qr-container">
+                <div class="qr-item">
+                    <img src="images/wechat-qr.png" alt="微信收款码" class="qr-code">
+                    <p>微信支付</p>
+                </div>
+                <div class="qr-item">
+                    <img src="images/alipay-qr.png" alt="支付宝收款码" class="qr-code">
+                    <p>支付宝</p>
+                </div>
+            </div>
+        </div>
+
+        <audio id="harmonica" src="audio/harmonica.mp3"></audio>
+    </div>
+
+    <!-- 添加图片模态框 -->
+    <div class="image-modal" id="imageModal">
+        <span class="close-modal">&times;</span>
+        <img id="modalImage" src="" alt="放大图">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
